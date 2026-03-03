@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    container_name: imec-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app # 👈 Bu satır sayesinde kod değişikliği anında yansır!
+    environment:
+      - DATABASE_URL=sqlite:///./social_match.db
+
+  frontend:
+    build: ./frontend
+    container_name: imec-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
