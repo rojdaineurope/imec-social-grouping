@@ -1,16 +1,56 @@
-# React + Vite
+# ResearchConnect: AI-Powered Researcher Matching System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ResearchConnect is a high-performance, containerized web application designed to foster collaboration among **imec** researchers. It utilizes an asynchronous matching engine to group researchers based on shared technical expertise and interests.
 
-Currently, two official plugins are available:
+## Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Automated Smart Grouping:** Automatically clusters researchers into collaborative groups using a "minimum 3-shared attributes" matching logic.
+2. **Asynchronous Execution:** Leverages Python's `BackgroundTasks` to ensure matching computations don't block the user interface.
+3. **Portable & Scalable:** Fully containerized with **Docker**, allowing for "one-command" deployment in any environment.
+4. **Type-Safe Frontend:** Built with **TypeScript** to ensure robust data handling and a bug-free UI experience.
+5. **Responsive Design:** A sleek, modern interface optimized for all devices using **Tailwind CSS**.
 
-## React Compiler
+![ResearchConnect UI](application_ui.png)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **Backend:** FastAPI (Python), SQLAlchemy ORM, SQLite.
+- **Frontend:** React 18, TypeScript, Vite, Axios, Tailwind CSS.
+- **DevOps:** Docker, Docker Compose.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+Docker & Docker Compose installed on your system.
+
+### Installation & Launch
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone [https://github.com/your-username/research-connect.git](https://github.com/your-username/research-connect.git)
+   cd research-connect
+
+   ```
+
+2. **Start the system:**
+
+   ```bash
+   docker-compose up --build
+
+   ```
+
+3. **Access the Application:**
+
+Frontend Interface: http://localhost:5173
+
+Interactive API Documentation (Swagger): http://localhost:8000/docs
+
+The system follows a strict "privacy-first" and "efficiency-driven" approach:
+
+When a researcher registers with 5 unique attributes, the backend initiates an asynchronous search.
+
+It compares the new user's attributes against existing database records.
+
+If at least 3 attributes match an existing group, the user is assigned to that group.
+
+Otherwise, a new unique group is generated using UUID v4 standards.
