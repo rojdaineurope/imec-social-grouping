@@ -10,7 +10,7 @@ services:
       - ./backend:/app
     environment:
       - WATCHFILES_FORCE_POLLING=true #Hot Reload
-      - DATABASE_URL=sqlite:///./sql_app.db
+      - DATABASE_URL=sqlite:///./social_match.db
 
   frontend:
     build: ./frontend
