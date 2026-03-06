@@ -7,9 +7,10 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app # 👈 Bu satır sayesinde kod değişikliği anında yansır!
+      - ./backend:/app
     environment:
-      - DATABASE_URL=sqlite:///./social_match.db
+      - WATCHFILES_FORCE_POLLING=true #Hot Reload
+      - DATABASE_URL=sqlite:///./sql_app.db
 
   frontend:
     build: ./frontend
