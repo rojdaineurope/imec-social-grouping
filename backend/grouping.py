@@ -1,3 +1,5 @@
+#This is a useful first draft before integrate database,only to understand the basic logic
+
 import uuid
 
 MIN_MATCH = 3
