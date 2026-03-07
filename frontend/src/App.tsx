@@ -8,22 +8,23 @@ const App: React.FC = () => {
   const [name, setName] = useState('');
   const [attrs, setAttrs] = useState('');
   const [userId, setUserId] = useState<string | null>(null);
-  const [userName, setUserName] = useState<string>(''); // Son kaydolan ismi tutmak için
+  const [userName, setUserName] = useState<string>(''); // holds last register person's name
   const [groupMembers, setGroupMembers] = useState<any[]>([]);
-  const [userGroupId, setUserGroupId] = useState<string | null>(null); // Grup ID'sini tutmak için yeni state
+  const [userGroupId, setUserGroupId] = useState<string | null>(null); // Holds group id ,only seenable by the group members
   const [status, setStatus] = useState('PENDING');
   const [loading, setLoading] = useState(false);
 
-  // Kayıt Fonksiyonu
+  
+  // Register Function
   const handleRegister = async () => {
-  // Virgülle ayrılan özellikleri diziye çevir
+  
   const attributesArray = attrs.split(',').map(a => a.trim()).filter(a => a !== "");
 
-  // 🚨 FRONTEND KONTROLÜ
+  //Frontend Check
   if (attributesArray.length !== 5) {
     return alert("Please enter 5 attributes (Ex. Python, Java, AI, Research, Imec)");
   }
-  // 2. BENZERSİZLİK KONTROLU (Aynı özellik tekrar edemez)
+  // Uniqueness check
   const uniqueAttributes = new Set(attributesArray);
   if (uniqueAttributes.size !== 5) {
     return alert("Attributes must be unique.");
@@ -36,20 +37,20 @@ const App: React.FC = () => {
       attributes: attributesArray
     });
     
-    // ✨ ESKİ VERİLERİ TEMİZLE VE YENİLERİNİ SET ET
+    // Set new data, clean old data
     const newId = response.data.user_id;
-    const newGroupId = response.data.group_id; // Backend'den gelen grup id
+    const newGroupId = response.data.group_id; // The group id which is come from backend
     
 
     setUserId(newId);
     setUserName(name);
     alert("successful registration.Enjoy your group!");
   } catch (err) {
-    alert("Error:Are you sure you entered 5 attributes?");
+    alert("Error:Are you sure you entered 4 attributes?");
   }
 };
 
-  // Grubu Manuel Getir
+  // Bring Group information(Group Id,Group members,Group members' features)
  const fetchMyGroup = async () => {
   if (!userId) return alert("Add first a user!");
   setLoading(true);
@@ -57,7 +58,7 @@ const App: React.FC = () => {
     const userRes = await axios.get(`${API_BASE}/users/${userId}`);
     const gid = userRes.data.group_id;
     
-    // UI'da Group ID'yi göstermek için state'i güncelle
+    // Update the state to show the Group ID in the UI.
     setUserGroupId(gid); 
 
     if (gid && gid !== "PENDING") {
@@ -85,7 +86,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-slate-50 p-4 md:p-8 font-sans">
       <div className="max-w-5xl mx-auto space-y-8">
         
-        {/* Başlık */}
+        {/* Title */}
         <header className="text-center">
           <h1 className="text-4xl font-extrabold text-blue-700">imec Social Match</h1>
           <p className="text-slate-500 mt-2">Researcher Networking & Grouping System</p>
@@ -93,7 +94,7 @@ const App: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
-          {/* SOL TARAF: KAYIT FORMU (HİÇ GİTMEZ) */}
+          {/* Left Side:Register Form */}
           <section className="bg-white p-8 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 h-fit">
             <div className="flex items-center gap-3 mb-6 text-blue-600">
               <UserPlus size={28} />
@@ -125,7 +126,7 @@ const App: React.FC = () => {
               </button>
             </div>
           </section>
-          {/* SAĞ TARAF: KEŞFETME VE GRUP PANELİ */}
+          {/* Right Side: Explore and Group Panel */}
           <section className="space-y-6 text-left">
             <div className="bg-white p-6 rounded-3xl shadow-md border border-slate-100 border-l-8 border-l-blue-600">
               <div className="flex justify-between items-start">
@@ -133,12 +134,12 @@ const App: React.FC = () => {
                   <h3 className="font-bold text-slate-500 text-[10px] uppercase tracking-widest mb-1">Last Added Researcher</h3>
                   <p className="text-xl font-bold text-slate-800">{userName || "None yet"}</p>
                 </div>
-                {/* Durum etiketi */}
+                {/* Case Label */}
                 <div className={`px-4 py-1 rounded-full text-xs font-bold ${status === 'PENDING' ? 'bg-amber-100 text-amber-600' : 'bg-green-100 text-green-700'}`}>
                   {status}
                 </div>
               </div>
-              {/* ID BİLGİLERİ BURAYA GELİYOR */}
+              {/* ID informations come here */}
               {userId && (
                <div className="mt-4 space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
                  <div>
@@ -159,7 +160,7 @@ const App: React.FC = () => {
                </div>
                
           )}
-              {/* BUTON BURADA: userId varsa her zaman göster */}
+              {/* BUTON  */}
              
                  <button 
                    onClick={fetchMyGroup} 
@@ -170,11 +171,11 @@ const App: React.FC = () => {
                  </button>
          
              </div>
-             {/* Grup üyeleri listesi aşağıda devam eder... */}
+             {/* Group members list continues */}
           </section>
           
 
-            {/* Grup Listesi */}
+            {/* Group List */}
             <div className="bg-white p-6 rounded-3xl shadow-lg border border-slate-100">
               <div className="flex items-center gap-3 mb-6 border-b pb-4">
                 <Users className="text-blue-600" />
